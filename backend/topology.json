@@ -1,0 +1,60 @@
+{
+  "name": "root",
+  "port": 8000,
+  "cpu": 2,
+  "children": [
+    {
+      "name": "bode",
+      "port": 8001,
+      "cpu": 6,
+      "children": [
+        {
+          "name": "overgrossness",
+          "port": 8002,
+          "cpu": 6,
+          "children": [
+            {
+              "name": "pussy",
+              "port": 8003,
+              "cpu": 4,
+              "children": [
+                {
+                  "name": "likened",
+                  "port": 8004,
+                  "cpu": 8,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "maizer",
+              "port": 8005,
+              "cpu": 2,
+              "children": [
+                {
+                  "name": "sigfile",
+                  "port": 8006,
+                  "cpu": 4,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scratchcard",
+      "port": 8007,
+      "cpu": 4,
+      "children": [
+        {
+          "name": "permeases",
+          "port": 8008,
+          "cpu": 2,
+          "children": []
+        }
+      ]
+    }
+  ]
+}

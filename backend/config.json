@@ -1,0 +1,6 @@
+{
+    "max_cpu":75,
+    "task_time":10,
+    "rebalance_interval":5
+
+}

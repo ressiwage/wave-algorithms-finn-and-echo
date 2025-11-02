@@ -26,8 +26,11 @@ def task_worker():
     global app, load_queue
     while True:
         if not load_queue.empty():
-            load_queue.get()
-            app.state.load-=1
+            try:
+                load_queue.get(block=False)
+                app.state.load-=1
+            except:
+                pass
             time.sleep(config['task_time'])
 
 class MessageRequest(BaseModel):
@@ -170,8 +173,12 @@ async def add_task(target:int):
     global load_lock
     requests.get(f"http://localhost:{target}/add_task")
     with load_lock:
-        app.state.load-=1
-        load_queue.get()
+        try:
+            load_queue.get(block=False)
+            app.state.load-=1
+        except:
+            return {"status":"error"}
+        
     if app.state.load<1:
         return {"status":"error"}
     return {"status":"ok"}

@@ -125,7 +125,7 @@ async def send_message(request: MessageRequest):
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
-connecions = {}
+sockets = {}
 
 async def sockets_send(url: str, payload:dict, receiver: str):
     url = url.replace("http:","ws:")

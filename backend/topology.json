@@ -1,40 +1,39 @@
 {
   "name": "root",
   "port": 8000,
-  "cpu": 2,
+  "cpu": 4,
   "children": [
     {
-      "name": "bode",
+      "name": "affixed",
       "port": 8001,
-      "cpu": 6,
+      "cpu": 2,
       "children": [
         {
-          "name": "overgrossness",
+          "name": "haywagon",
           "port": 8002,
           "cpu": 6,
+          "children": []
+        },
+        {
+          "name": "tubularia",
+          "port": 8003,
+          "cpu": 4,
           "children": [
             {
-              "name": "pussy",
-              "port": 8003,
-              "cpu": 4,
-              "children": [
-                {
-                  "name": "likened",
-                  "port": 8004,
-                  "cpu": 8,
-                  "children": []
-                }
-              ]
+              "name": "preindemnifying",
+              "port": 8004,
+              "cpu": 6,
+              "children": []
             },
             {
-              "name": "maizer",
+              "name": "subserviate",
               "port": 8005,
               "cpu": 2,
               "children": [
                 {
-                  "name": "sigfile",
+                  "name": "pical",
                   "port": 8006,
-                  "cpu": 4,
+                  "cpu": 8,
                   "children": []
                 }
               ]
@@ -44,17 +43,10 @@
       ]
     },
     {
-      "name": "scratchcard",
+      "name": "outwhirled",
       "port": 8007,
-      "cpu": 4,
-      "children": [
-        {
-          "name": "permeases",
-          "port": 8008,
-          "cpu": 2,
-          "children": []
-        }
-      ]
+      "cpu": 6,
+      "children": []
     }
   ]
 }

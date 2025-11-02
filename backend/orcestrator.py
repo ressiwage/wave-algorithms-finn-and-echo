@@ -10,13 +10,13 @@ visualize(topology)
 #    p.wait()
 
 launch_commands = []
-def rec(server):
+def rec(server, parents=0):
     global launch_commands
-    launch_commands.append(f"python3 {os.path.join(this_dir, 'unit.py')} --cpu {server['cpu']} --port {server['port']} --name {server['name']}")
+    launch_commands.append(f"python3 {os.path.join(this_dir, 'unit.py')} --num_parents {parents} --cpu {server['cpu']} --port {server['port']} --name {server['name']}")
     if len(server['children']):
         launch_commands[-1]+= f" --children {' '.join([str(i['port']) for i in server['children']])}"
     for child in server['children']:
-        rec(child)
+        rec(child, parents=1)
 rec(topology)
 print(*launch_commands, sep='\n')
 

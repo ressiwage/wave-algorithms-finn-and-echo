@@ -66,6 +66,8 @@ async def startup_event():
     app.state.load = 0
     threading.Thread(target=thread).start()
 
+clients = []  # клиенты (браузеры)
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     """
@@ -73,6 +75,7 @@ async def websocket_endpoint(websocket: WebSocket):
     Принимает сообщения и сохраняет их для последующего просмотра через REST API.
     """
     await websocket.accept()
+    clients.append(websocket)
     global last_message
     
     try:
@@ -80,9 +83,25 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             last_message = data
             print(f"Получено сообщение: {data}")
+            # await websocket.send_text(f"Сервер получил: {data}")
+            disconnected = []
+
+            for client in clients:
+                if client is not websocket:  # не отсылаем обратно источнику
+                    try:
+                        await client.send_text(data)
+                    except Exception:
+                        # если клиент уже отключился — добавляем в список на удаление
+                        disconnected.append(client)
+            for d in disconnected:
+                if d in clients:
+                    clients.remove(d)
+
             
     except WebSocketDisconnect:
         print("Клиент отключился")
+
+        
 
 
 @app.post("/send-message")
@@ -100,10 +119,10 @@ async def send_message(request: MessageRequest):
     except Exception as e:
         return {"status": "error", "message": str(e)}
     
-async def sockets_send(url: str, payload:dict):
-    
+async def sockets_send(url: str, payload:dict, receiver: str):
+    url = url.replace("http:","ws:")
     import websockets
-    payload['sender'] = f'http://localhost:{7999}/ws'
+    payload['sender'] = receiver #f'http://localhost:{7999}/ws'
     try:
         async with websockets.connect(url) as websocket:
             await websocket.send(json.dumps(payload))
@@ -137,8 +156,12 @@ async def route_echo():
     return echo()
 
 @app.get('/echo_ws')
-async def route_echo():
-    return sockets_send(f"http://localhost:{8000}/echo", {'route':'echo'})
+async def route_echo(receiver: str):
+    return await sockets_send(f"http://localhost:{8000}/ws", {'route':'echo'}, receiver)
+
+@app.get('/finn_ws')
+async def route_echo(receiver: str):
+    return await sockets_send(f"http://localhost:{8000}/ws", {'route':'finn', 'inc': [], 'ninc':[]}, receiver)
 
 def echo():
     r = ignore_exception(requests.get)(f'http://localhost:{8000}/echo')
